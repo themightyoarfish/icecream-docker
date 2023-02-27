@@ -1,0 +1,21 @@
+# syntax=docker/dockerfile
+FROM ubuntu:20.04
+
+RUN apt update && apt -y install git build-essential help2man
+RUN apt update && apt -y install autotools-dev automake
+RUN git clone http://git.sv.gnu.org/r/autoconf.git && cd autoconf
+WORKDIR autoconf
+RUN ./bootstrap
+RUN PERL=$(which perl) ./configure
+RUN apt update && DEBIAN_FRONTEND=noninteractive apt -y install texinfo
+RUN make -j$(getconf _NPROCESSORS_ONLN) && make install
+
+WORKDIR ~
+RUN git clone https://github.com/icecc/icecream.git
+RUN apt update && apt -y install libcap-ng-dev liblzo2-dev libzstd-dev libarchive-dev libtool pkg-config
+WORKDIR icecream
+RUN ./autogen.sh
+RUN ./configure --without-man
+RUN make -j$(getconf _NPROCESSORS_ONLN) && make install
+
+RUN useradd icecc

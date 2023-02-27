@@ -1,0 +1,3 @@
+FROM icecream-20.04-base
+
+ENTRYPOINT ["iceccd", "-vvv", "-l", "/tmp/iceccd.log"]

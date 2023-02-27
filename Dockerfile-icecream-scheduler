@@ -1,0 +1,3 @@
+FROM icecream-20.04-base
+
+ENTRYPOINT ["icecc-scheduler", "-vvv", "-l", "/tmp/icecc-scheduler.log"]
